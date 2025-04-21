@@ -47,7 +47,12 @@ public:
     
     UFUNCTION(BlueprintCallable, Category = "Settings")
     void SetFullscreenMode(bool bFullscreen);
+    // Add missing function declarations
+    UFUNCTION(BlueprintCallable, Category = "Settings")
+    void OnResolutionSelected(FString SelectedItem, ESelectInfo::Type SelectionType);
 
+    UFUNCTION(BlueprintCallable, Category = "Settings")
+    void OnFullscreenChanged(bool bIsChecked);
 protected:
     // UI Components - to be bound in Blueprint
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget), Category = "Settings")

@@ -87,8 +87,9 @@ private:
     template<typename T>
     T* CreateWidgetIfNeeded(TSubclassOf<T>& WidgetClass, T*& WidgetRef);
     
-    // Helper to clean up a widget properly
-    void CleanupWidget(class UUserWidget*& Widget);
+    // Template helper to clean up a widget properly
+    template<typename T>
+    void CleanupWidget(T*& Widget);
 
 private:
     // Player controller reference

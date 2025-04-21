@@ -208,12 +208,12 @@ void UWUIManager::ShowMenu(EWMenuType MenuType, const FString& Param)
             CleanupWidget(SettingsMenuWidget);
             CleanupWidget(VictoryScreenWidget);
             CleanupWidget(DefeatMenuWidget);
-            
+
             // Set game-only input mode
             FInputModeGameOnly InputMode;
             PlayerController->SetInputMode(InputMode);
             PlayerController->bShowMouseCursor = false;
-            
+
             // Unpause game
             SetGamePaused(false);
             break;
@@ -228,34 +228,35 @@ void UWUIManager::CloseCurrentMenu()
     // Close the current menu widget based on type
     switch (CurrentMenuType)
     {
-        case EWMenuType::Main:
-            CleanupWidget(MainMenuWidget);
-            break;
-        case EWMenuType::Pause:
-            CleanupWidget(PauseMenuWidget);
-            // Unpause the game
-            SetGamePaused(false);
-            break;
-        case EWMenuType::Settings:
-            CleanupWidget(SettingsMenuWidget);
-            break;
-        case EWMenuType::Victory:
-            CleanupWidget(VictoryScreenWidget);
-            break;
-        case EWMenuType::Defeat:
-            CleanupWidget(DefeatMenuWidget);
-            break;
-        case EWMenuType::HUD:
-            CleanupWidget(HUDWidget);
-            break;
-        case EWMenuType::None:
-        default:
-            // All menus are already closed
-            break;
+    case EWMenuType::Main:
+        CleanupWidget(MainMenuWidget);
+        break;
+    case EWMenuType::Pause:
+        CleanupWidget(PauseMenuWidget);
+        // Unpause the game
+        SetGamePaused(false);
+        break;
+    case EWMenuType::Settings:
+        CleanupWidget(SettingsMenuWidget);
+        break;
+    case EWMenuType::Victory:
+        CleanupWidget(VictoryScreenWidget);
+        break;
+    case EWMenuType::Defeat:
+        CleanupWidget(DefeatMenuWidget);
+        break;
+    case EWMenuType::HUD:
+        CleanupWidget(HUDWidget);
+        break;
+    case EWMenuType::None:
+    default:
+        // All menus are already closed
+        break;
     }
-    
+
     CurrentMenuType = EWMenuType::None;
 }
+
 
 void UWUIManager::ReturnToPreviousMenu()
 {
@@ -394,7 +395,8 @@ T* UWUIManager::CreateWidgetIfNeeded(TSubclassOf<T>& WidgetClass, T*& WidgetRef)
     return nullptr;
 }
 
-void UWUIManager::CleanupWidget(UUserWidget*& Widget)
+template<typename T>
+void UWUIManager::CleanupWidget(T*& Widget)
 {
     if (Widget)
     {

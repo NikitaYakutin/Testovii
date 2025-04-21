@@ -39,7 +39,9 @@ public:
     UPROPERTY()
     bool bIsSettingsOpenFromPause;
 
-
+    // Get the UI Manager
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    UWUIManager* GetUIManager() const { return UIManager; }
 
 
     // Called when the controller possesses a pawn
@@ -61,10 +63,10 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
     TSubclassOf<class UWVictoryScreenWidget> VictoryScreenWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
+    TSubclassOf<class UWMainMenuWidget> MainMenuWidgetClass;
     // UI Manager reference
     UPROPERTY()
     UWUIManager* UIManager;
-// Get the UI Manager
-UFUNCTION(BlueprintCallable, Category = "UI")
-UWUIManager* GetUIManager() const { return UIManager; }
+
 };
