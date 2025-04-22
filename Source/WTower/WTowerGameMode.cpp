@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Audio/WAudioManagerActor.h"
 #include "WTowerGameInstance.h"
+#include "Menu/MenuGameMode.h"
 AWTowerGameMode::AWTowerGameMode()
 {
     // Set default pawn class to our player character

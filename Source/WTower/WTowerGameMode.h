@@ -94,11 +94,15 @@ public:
     TSubclassOf<class UWDefeatMenuWidget> DefeatMenuWidgetClass;
 
     UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UUserWidget> HUDWidgetClass;
+    TSubclassOf<class UWTowerHUDWidget> HUDWidgetClass;
+    // UIManager для централизованного управления UI
+
+    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
+    TSubclassOf<class UWUIManager> UIManagerClass;
+    UPROPERTY()
+    UWUIManager* UIManager;
 private:
     // Переменные состояния игры
     bool bGameEnded;
-    // UIManager для централизованного управления UI
-    UPROPERTY()
-    UWUIManager* UIManager;
+
 };
