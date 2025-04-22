@@ -16,21 +16,43 @@ void AMenuGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Get player controller directly
-        // Теперь UIManager создается и инициализируется в WTowerGameMode
-    // Нам нужно только получить его ссылку
-
-    AWTowerGameMode* WTowerGM = Cast<AWTowerGameMode>(GetWorld()->GetAuthGameMode());
-    if (WTowerGM)
+    // Получаем контроллер игрока
+    APlayerController* DefaultPC = GetWorld()->GetFirstPlayerController();
+    AMenuPlayerController* PC = Cast<AMenuPlayerController>(DefaultPC);
+    if (PC)
     {
-        UIManager = WTowerGM->GetUIManager();
-
-        // Получаем MenuPlayerController
-        AMenuPlayerController* PC = Cast<AMenuPlayerController>(GetWorld()->GetFirstPlayerController());
-        if (PC && UIManager)
+        // Создаём UI Manager
+        if (UIManagerClass)
         {
-            PC->SetUIManager(UIManager);
+            UIManager = NewObject<UWUIManager>(this, UIManagerClass);
         }
+        else
+        {
+            UIManager = NewObject<UWUIManager>(this);
+        }
+
+        // Инициализируем UIManager с контроллером
+        UIManager->Initialize(PC);
+
+        // Устанавливаем классы виджетов
+        UIManager->SetWidgetClasses(
+            MainMenuWidgetClass,
+            PauseMenuWidgetClass,
+            SettingsMenuWidgetClass,
+            VictoryScreenWidgetClass,
+            DefeatMenuWidgetClass,
+            HUDWidgetClass
+        );
+
+        // Устанавливаем UIManager в контроллере
+        PC->SetUIManager(UIManager);
+
+        // Показываем главное меню
+        UIManager->ShowMenu(EWMenuType::Main);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("MenuGameMode: No player controller available!"));
     }
 }
 

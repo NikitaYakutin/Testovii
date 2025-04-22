@@ -16,30 +16,6 @@ AWTowerPlayerController::AWTowerPlayerController()
     bEnableMouseOverEvents = false;
     bIsSettingsOpenFromPause = false;
 
-    // Load widget classes - using the correct syntax for ConstructorHelpers
-    static ConstructorHelpers::FClassFinder<UUserWidget> PauseWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_PauseMenu"));
-    if (PauseWidgetClassFinder.Succeeded())
-    {
-        PauseMenuWidgetClass = PauseWidgetClassFinder.Class;
-    }
-
-    static ConstructorHelpers::FClassFinder<UUserWidget> SettingsWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_SettingsMenu"));
-    if (SettingsWidgetClassFinder.Succeeded())
-    {
-        SettingsMenuWidgetClass = SettingsWidgetClassFinder.Class;
-    }
-
-    static ConstructorHelpers::FClassFinder<UUserWidget> VictoryWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_VictoryScreen"));
-    if (VictoryWidgetClassFinder.Succeeded())
-    {
-        VictoryScreenWidgetClass = VictoryWidgetClassFinder.Class;
-    }
-
-    static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_MainMenu"));
-    if (MainMenuWidgetClassFinder.Succeeded())
-    {
-        MainMenuWidgetClass = MainMenuWidgetClassFinder.Class;
-    }
 }
 
 void AWTowerPlayerController::OnPossess(APawn* InPawn)
@@ -57,35 +33,7 @@ void AWTowerPlayerController::BeginPlay()
 {
     Super::BeginPlay();
     
-    // Initialize UI Manager
-    if (!UIManager)
-    {
-        UIManager = NewObject<UWUIManager>(this);
-        if (UIManager)
-        {
-            UIManager->Initialize(this);
-            
-            // Try to find widget classes from GameMode (if available)
-            AMenuGameMode* MenuGameMode = Cast<AMenuGameMode>(GetWorld()->GetAuthGameMode());
-            if (MenuGameMode)
-            {
-                UIManager->SetWidgetClasses(
-                    MenuGameMode->MainMenuWidgetClass,
-                    MenuGameMode->PauseMenuWidgetClass,
-                    MenuGameMode->SettingsMenuWidgetClass,
-                    MenuGameMode->VictoryScreenWidgetClass,
-                    nullptr,  // DefeatMenuWidgetClass - may need to add to MenuGameMode
-                    nullptr   // HUDWidgetClass - may need to add to MenuGameMode
-                );
-            }
-            
-            // Show HUD if in gameplay level
-            if (UGameplayStatics::GetCurrentLevelName(this) != "MainMenu")
-            {
-                UIManager->ShowHUD();
-            }
-        }
-    }
+  
     
     // Set default controller input mode to game only
     FInputModeGameOnly InputMode;

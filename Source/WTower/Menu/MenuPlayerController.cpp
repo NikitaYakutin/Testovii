@@ -29,15 +29,7 @@ void AMenuPlayerController::BeginPlay()
     // Отключаем паузу, если она была включена
     SetPause(false);
 
-    // UIManager теперь будет установлен из WTowerGameMode через MenuGameMode
-    if (!UIManager)
-    {
-        AWTowerGameMode* WTowerGM = Cast<AWTowerGameMode>(GetWorld()->GetAuthGameMode());
-        if (WTowerGM)
-        {
-            UIManager = WTowerGM->GetUIManager();
-        }
-    }
+
 }
 void AMenuPlayerController::SetUIManager(UWUIManager* InUIManager)
 {

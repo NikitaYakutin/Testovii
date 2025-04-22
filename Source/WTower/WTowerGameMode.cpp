@@ -9,6 +9,7 @@
 #include "Audio/WAudioManagerActor.h"
 #include "WTowerGameInstance.h"
 #include "Menu/MenuGameMode.h"
+#include "Menu/MenuPlayerController.h"
 AWTowerGameMode::AWTowerGameMode()
 {
     // Set default pawn class to our player character
@@ -42,7 +43,26 @@ void AWTowerGameMode::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Создание и инициализация UIManager
+    // Инициализация аудио менеджера
+    AWAudioManagerActor* AudioManager = Cast<AWAudioManagerActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AWAudioManagerActor::StaticClass()));
+    if (AudioManager)
+    {
+
+
+            AudioManager->PlayGameplayMusic();
+
+    }
+
+    UE_LOG(LogTemp, Log, TEXT("WTowerGameMode: Game started"));
+
+    AWTowerGameState* WTowerGameState = Cast<AWTowerGameState>(GameState);
+    if (WTowerGameState)
+    {
+        // Подписываемся на событие завершения игры
+        WTowerGameState->OnGameCompleted.AddDynamic(this, &AWTowerGameMode::OnGameCompleted);
+    }
+
+    // Создаем и инициализируем UIManager
     if (UIManagerClass)
     {
         UIManager = NewObject<UWUIManager>(this, UIManagerClass);
@@ -51,6 +71,7 @@ void AWTowerGameMode::BeginPlay()
     {
         UIManager = NewObject<UWUIManager>(this);
     }
+
     // Получаем контроллер игрока
     APlayerController* DefaultPC = GetWorld()->GetFirstPlayerController();
     if (DefaultPC)
@@ -68,42 +89,30 @@ void AWTowerGameMode::BeginPlay()
             HUDWidgetClass
         );
 
-        // Если мы находимся в уровне меню, показываем главное меню
-        if (UGameplayStatics::GetCurrentLevelName(this) == "MainMenu")
-        {
-            UIManager->ShowMenu(EWMenuType::Main);
-        }
-        else
-        {
+
             // В игровом уровне показываем HUD
             UIManager->ShowHUD();
-        }
 
-        // Если это WTowerPlayerController, устанавливаем UIManager
+            // Устанавливаем режим ввода для игры
+            FInputModeGameOnly InputMode;
+            DefaultPC->SetInputMode(InputMode);
+            DefaultPC->SetShowMouseCursor(false);
+        
+
+        // Устанавливаем UIManager в контроллере
         AWTowerPlayerController* PC = Cast<AWTowerPlayerController>(DefaultPC);
         if (PC)
         {
             PC->SetUIManager(UIManager);
         }
+
+
     }
     else
     {
         UE_LOG(LogTemp, Error, TEXT("WTowerGameMode: No player controller available!"));
     }
-    AWAudioManagerActor* AudioManager = Cast<AWAudioManagerActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AWAudioManagerActor::StaticClass()));
-    if (AudioManager)
-    {
-        AudioManager->PlayGameplayMusic();
-    }
-    UE_LOG(LogTemp, Log, TEXT("WTowerGameMode: Game started"));
-    AWTowerGameState* WTowerGameState = Cast<AWTowerGameState>(GameState);
-    if (WTowerGameState)
-    {
-        // Подписываемся на событие завершения игры
-        WTowerGameState->OnGameCompleted.AddDynamic(this, &AWTowerGameMode::OnGameCompleted);
-    }
 }
-
 AActor* AWTowerGameMode::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
 {
     // First try the default implementation which uses PlayerStart actors

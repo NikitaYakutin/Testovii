@@ -1,8 +1,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MenuWidget/WSettingsMenuWidget.h"
+#include "MenuWidget/WPauseMenuWidget.h"
+#include "MenuWidget/WVictoryScreenWidget.h"
+#include "MenuWidget/WDefeatMenuWidget.h"
+#include <WTower/WTowerHUDWidget.h>
 #include "GameFramework/GameModeBase.h"
+#include "MenuWidget/WMainMenuWidget.h"
 #include "MenuGameMode.generated.h"
+
+
+
 
 class UWUIManager;
 
@@ -27,28 +36,18 @@ public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     void ReturnToPreviousMenu();
 
-    // Get UIManager
-    UFUNCTION(BlueprintPure, Category = "UI")
-    UWUIManager* GetUIManager() const { return UIManager; }
-    
-    // Widget classes for UI
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWMainMenuWidget> MainMenuWidgetClass;
-
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWPauseMenuWidget> PauseMenuWidgetClass;
-
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWSettingsMenuWidget> SettingsMenuWidgetClass;
-
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWVictoryScreenWidget> VictoryScreenWidgetClass;
-    
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWDefeatMenuWidget> DefeatMenuWidgetClass;
-    
-    UPROPERTY(EditDefaultsOnly, Category = "UI|Widgets")
-    TSubclassOf<class UWTowerHUDWidget> HUDWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWMainMenuWidget> MainMenuWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWSettingsMenuWidget> SettingsMenuWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWPauseMenuWidget> PauseMenuWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWVictoryScreenWidget> VictoryScreenWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWDefeatMenuWidget> DefeatMenuWidgetClass;
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+    TSubclassOf<UWTowerHUDWidget> HUDWidgetClass;
     
 private:
     UPROPERTY(EditDefaultsOnly, Category = "UI")
