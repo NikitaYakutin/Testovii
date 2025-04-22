@@ -205,6 +205,7 @@ void AWTowerGameMode::EndGameWithVictory()
     }
 
     bGameEnded = true;
+    UGameplayStatics::SetGamePaused(this, true);
     UpdateBestScoreAndTime();
     UE_LOG(LogTemp, Log, TEXT("WTowerGameMode: Game ended with VICTORY"));
 
@@ -235,6 +236,7 @@ void AWTowerGameMode::EndGameWithDefeat(FString Reason)
     }
 
     bGameEnded = true;
+    UGameplayStatics::SetGamePaused(this, true);
     UpdateBestScoreAndTime();
     UE_LOG(LogTemp, Log, TEXT("WTowerGameMode: Game ended with DEFEAT. Reason: %s"), *Reason);
 
@@ -247,6 +249,7 @@ void AWTowerGameMode::EndGameWithDefeat(FString Reason)
 
     // Broadcast delegate for defeat
     OnGameOver.Broadcast(false, Reason);
+
 }
 void AWTowerGameMode::UpdateBestScoreAndTime()
 {

@@ -15,7 +15,7 @@ AWAudioManagerActor::AWAudioManagerActor()
 
     // Инициализация значений громкости
     MasterVolume = 1.0f;
-    MusicVolume = 0.7f;
+    MusicVolume = 0.5f;
     SFXVolume = 1.0f;
     bMuteAudio = false;
 }
