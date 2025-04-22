@@ -40,6 +40,55 @@ AWTowerGameMode::AWTowerGameMode()
 void AWTowerGameMode::BeginPlay()
 {
     Super::BeginPlay();
+
+    // Создание и инициализация UIManager
+    if (UIManagerClass)
+    {
+        UIManager = NewObject<UWUIManager>(this, UIManagerClass);
+    }
+    else
+    {
+        UIManager = NewObject<UWUIManager>(this);
+    }
+    // Получаем контроллер игрока
+    APlayerController* DefaultPC = GetWorld()->GetFirstPlayerController();
+    if (DefaultPC)
+    {
+        // Инициализируем UIManager с контроллером
+        UIManager->Initialize(DefaultPC);
+
+        // Устанавливаем классы виджетов
+        UIManager->SetWidgetClasses(
+            MainMenuWidgetClass,
+            PauseMenuWidgetClass,
+            SettingsMenuWidgetClass,
+            VictoryScreenWidgetClass,
+            DefeatMenuWidgetClass,
+            HUDWidgetClass
+        );
+
+        // Если мы находимся в уровне меню, показываем главное меню
+        if (UGameplayStatics::GetCurrentLevelName(this) == "MainMenu")
+        {
+            UIManager->ShowMenu(EWMenuType::Main);
+        }
+        else
+        {
+            // В игровом уровне показываем HUD
+            UIManager->ShowHUD();
+        }
+
+        // Если это WTowerPlayerController, устанавливаем UIManager
+        AWTowerPlayerController* PC = Cast<AWTowerPlayerController>(DefaultPC);
+        if (PC)
+        {
+            PC->SetUIManager(UIManager);
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("WTowerGameMode: No player controller available!"));
+    }
     AWAudioManagerActor* AudioManager = Cast<AWAudioManagerActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AWAudioManagerActor::StaticClass()));
     if (AudioManager)
     {
@@ -232,4 +281,30 @@ void AWTowerGameMode::UpdateBestScoreAndTime()
 
     // Save game data to ensure everything is persisted
     GameInstance->SaveGameData();
+}
+
+// Добавьте следующие методы в конец файла:
+
+void AWTowerGameMode::ShowMenu(EWMenuType MenuType)
+{
+    if (UIManager)
+    {
+        UIManager->ShowMenu(MenuType);
+    }
+}
+
+void AWTowerGameMode::CloseCurrentMenu()
+{
+    if (UIManager)
+    {
+        UIManager->CloseCurrentMenu();
+    }
+}
+
+void AWTowerGameMode::ReturnToPreviousMenu()
+{
+    if (UIManager)
+    {
+        UIManager->ReturnToPreviousMenu();
+    }
 }

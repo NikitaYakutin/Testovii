@@ -15,6 +15,31 @@ AWTowerPlayerController::AWTowerPlayerController()
     bEnableClickEvents = false;
     bEnableMouseOverEvents = false;
     bIsSettingsOpenFromPause = false;
+
+    // Load widget classes - using the correct syntax for ConstructorHelpers
+    static ConstructorHelpers::FClassFinder<UUserWidget> PauseWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_PauseMenu"));
+    if (PauseWidgetClassFinder.Succeeded())
+    {
+        PauseMenuWidgetClass = PauseWidgetClassFinder.Class;
+    }
+
+    static ConstructorHelpers::FClassFinder<UUserWidget> SettingsWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_SettingsMenu"));
+    if (SettingsWidgetClassFinder.Succeeded())
+    {
+        SettingsMenuWidgetClass = SettingsWidgetClassFinder.Class;
+    }
+
+    static ConstructorHelpers::FClassFinder<UUserWidget> VictoryWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_VictoryScreen"));
+    if (VictoryWidgetClassFinder.Succeeded())
+    {
+        VictoryScreenWidgetClass = VictoryWidgetClassFinder.Class;
+    }
+
+    static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClassFinder(TEXT("/Game/Blueprints/Menu/WBP_MainMenu"));
+    if (MainMenuWidgetClassFinder.Succeeded())
+    {
+        MainMenuWidgetClass = MainMenuWidgetClassFinder.Class;
+    }
 }
 
 void AWTowerPlayerController::OnPossess(APawn* InPawn)
@@ -120,4 +145,8 @@ void AWTowerPlayerController::ClosePauseMenu()
         UIManager->CloseCurrentMenu();
         UIManager->ShowHUD(); // Make sure HUD is visible
     }
+}
+void AWTowerPlayerController::SetUIManager(UWUIManager* InUIManager)
+{
+    UIManager = InUIManager;
 }

@@ -24,7 +24,9 @@ public:
 
         // Toggle pause menu
     void TogglePauseMenu();
-
+    // Добавьте метод:
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    void SetUIManager(UWUIManager* InUIManager);
     // Functions to manage menu navigation
     UFUNCTION(BlueprintCallable, Category = "UI")
     void OpenSettingsFromPause();
