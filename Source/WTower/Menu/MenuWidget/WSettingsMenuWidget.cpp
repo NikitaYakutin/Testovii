@@ -1,4 +1,4 @@
-#include "WSettingsMenuWidget.h"
+﻿#include "WSettingsMenuWidget.h"
 #include "Components/Slider.h"
 #include "Components/ComboBoxString.h"
 #include "Components/CheckBox.h"
@@ -107,6 +107,10 @@ void UWSettingsMenuWidget::NativeConstruct()
         ResolutionComboBox->OnSelectionChanged.AddDynamic(this, &UWSettingsMenuWidget::OnResolutionSelected);
     }
 
+    if (FullscreenCheckBox)
+    {
+        FullscreenCheckBox->OnCheckStateChanged.AddDynamic(this, &UWSettingsMenuWidget::OnFullscreenCheckBoxChanged);
+    }
 
 
     // ????? ????? ?????? ????? GetWidgetFromName, ???? ? ??? ??? ????????? meta = (BindWidget)
@@ -268,7 +272,13 @@ void UWSettingsMenuWidget::OnResolutionSelected(FString SelectedItem, ESelectInf
     }
 }
 
-void UWSettingsMenuWidget::OnFullscreenChanged(bool bIsChecked)
+
+// Обработчик для чекбокса с правильной сигнатурой
+// Replace the existing OnFullscreenCheckBoxChanged function
+void UWSettingsMenuWidget::OnFullscreenCheckBoxChanged(bool bIsChecked)
 {
-    bCurrentFullscreen = bIsChecked;
+    UE_LOG(LogTemp, Log, TEXT("OnFullscreenCheckBoxChanged called with value: %s"),
+        bIsChecked ? TEXT("Enabled") : TEXT("Disabled"));
+    SetFullscreenMode(bIsChecked);
 }
+
