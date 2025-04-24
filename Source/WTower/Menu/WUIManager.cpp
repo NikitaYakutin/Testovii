@@ -125,6 +125,7 @@ void UWUIManager::ShowMenu(EWMenuType MenuType, const FString& Param)
                     FInputModeUIOnly InputMode;
                     PlayerController->SetInputMode(InputMode);
                     PlayerController->bShowMouseCursor = true;
+                    SetGamePaused(true);
                 }
             }
             break;
@@ -312,6 +313,7 @@ void UWUIManager::TogglePauseMenu()
 
 void UWUIManager::OpenSettings()
 {
+
     // Show settings menu
     ShowMenu(EWMenuType::Settings);
 }

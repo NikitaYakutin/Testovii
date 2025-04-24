@@ -78,7 +78,56 @@ void UWSettingsMenuWidget::InitializeMenu()
         FullscreenCheckBox->SetCheckedState(bCurrentFullscreen ? ECheckBoxState::Checked : ECheckBoxState::Unchecked);
     }
 }
+// ???????? ???? ????? ??? ????????? ????????? ????? NativeConstruct
+void UWSettingsMenuWidget::NativeConstruct()
+{
+    Super::NativeConstruct();
 
+    // ???????? ????????????? ????
+    InitializeMenu();
+
+    // ??????????? ???????? ??? ???????? UI
+    if (MasterVolumeSlider)
+    {
+        MasterVolumeSlider->OnValueChanged.AddDynamic(this, &UWSettingsMenuWidget::UpdateMasterVolume);
+    }
+
+    if (MusicVolumeSlider)
+    {
+        MusicVolumeSlider->OnValueChanged.AddDynamic(this, &UWSettingsMenuWidget::UpdateMusicVolume);
+    }
+
+    if (SFXVolumeSlider)
+    {
+        SFXVolumeSlider->OnValueChanged.AddDynamic(this, &UWSettingsMenuWidget::UpdateSFXVolume);
+    }
+
+    if (ResolutionComboBox)
+    {
+        ResolutionComboBox->OnSelectionChanged.AddDynamic(this, &UWSettingsMenuWidget::OnResolutionSelected);
+    }
+
+
+
+    // ????? ????? ?????? ????? GetWidgetFromName, ???? ? ??? ??? ????????? meta = (BindWidget)
+    UButton* ApplyButton = Cast<UButton>(GetWidgetFromName(TEXT("ApplyButton")));
+    if (ApplyButton)
+    {
+        ApplyButton->OnClicked.AddDynamic(this, &UWSettingsMenuWidget::ApplySettings);
+    }
+
+    UButton* BackButton = Cast<UButton>(GetWidgetFromName(TEXT("BackButton")));
+    if (BackButton)
+    {
+        BackButton->OnClicked.AddDynamic(this, &UWSettingsMenuWidget::OnBackButtonClicked);
+    }
+
+    UButton* ResetButton = Cast<UButton>(GetWidgetFromName(TEXT("ResetButton")));
+    if (ResetButton)
+    {
+        ResetButton->OnClicked.AddDynamic(this, &UWSettingsMenuWidget::ResetToDefaults);
+    }
+}
 void UWSettingsMenuWidget::ApplySettings()
 {
     if (!GameInstanceRef)

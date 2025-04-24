@@ -2,8 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "WBaseMenuWidget.h"
+#include <Components/Button.h>
 #include <WTower/WTowerGameInstance.h>
 #include "WSettingsMenuWidget.generated.h"
+
 
 
 
@@ -50,9 +52,12 @@ public:
     // Add missing function declarations
     UFUNCTION(BlueprintCallable, Category = "Settings")
     void OnResolutionSelected(FString SelectedItem, ESelectInfo::Type SelectionType);
-
+    // Переопределение метода NativeConstruct для настройки делегатов
+    virtual void NativeConstruct() override;
     UFUNCTION(BlueprintCallable, Category = "Settings")
     void OnFullscreenChanged(bool bIsChecked);
+
+
 protected:
     // UI Components - to be bound in Blueprint
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget), Category = "Settings")
@@ -76,6 +81,7 @@ protected:
     // Reference to the settings menu
     UPROPERTY()
     UWSettingsMenuWidget* SettingsMenu;
+
 
     // Current settings values
     float CurrentMasterVolume;
